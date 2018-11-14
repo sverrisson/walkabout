@@ -14,6 +14,7 @@
 		D102ED53219CBEDD000D2E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D102ED52219CBEDD000D2E55 /* Assets.xcassets */; };
 		D102ED56219CBEDD000D2E55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D102ED54219CBEDD000D2E55 /* LaunchScreen.storyboard */; };
 		D102ED61219CBEDE000D2E55 /* WalkAboutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED60219CBEDE000D2E55 /* WalkAboutTests.swift */; };
+		D102ED6C219CCF23000D2E55 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6B219CCF23000D2E55 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		D102ED5C219CBEDE000D2E55 /* WalkAboutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WalkAboutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D102ED60219CBEDE000D2E55 /* WalkAboutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkAboutTests.swift; sourceTree = "<group>"; };
 		D102ED62219CBEDE000D2E55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D102ED6B219CCF23000D2E55 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				D102ED49219CBEDD000D2E55 /* AppDelegate.swift */,
 				D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */,
 				D102ED4D219CBEDD000D2E55 /* DetailViewController.swift */,
+				D102ED6B219CCF23000D2E55 /* Model.swift */,
 				D102ED4F219CBEDD000D2E55 /* Main.storyboard */,
 				D102ED52219CBEDD000D2E55 /* Assets.xcassets */,
 				D102ED54219CBEDD000D2E55 /* LaunchScreen.storyboard */,
@@ -203,6 +206,7 @@
 				D102ED4E219CBEDD000D2E55 /* DetailViewController.swift in Sources */,
 				D102ED4C219CBEDD000D2E55 /* MasterViewController.swift in Sources */,
 				D102ED4A219CBEDD000D2E55 /* AppDelegate.swift in Sources */,
+				D102ED6C219CCF23000D2E55 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
