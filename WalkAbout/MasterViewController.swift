@@ -1,5 +1,5 @@
 //
-//  MasterViewController.swift
+//  SessionViewController.swift
 //  WalkAbout
 //
 //  Created by Hannes Sverrisson on 14/11/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class SessionViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
