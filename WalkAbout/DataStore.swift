@@ -11,7 +11,7 @@ import os
 
 // DataStore is a singleton to isolate all data store communication from the actual database
 
-class DataStore {
+final class DataStore {
     static let shared = DataStore()
     
     init() {

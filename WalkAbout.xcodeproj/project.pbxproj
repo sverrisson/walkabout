@@ -19,6 +19,7 @@
 		D102ED70219CD340000D2E55 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6F219CD340000D2E55 /* DataStore.swift */; };
 		D102ED73219CD753000D2E55 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D102ED72219CD753000D2E55 /* libsqlite3.tbd */; };
 		D102ED76219CDD79000D2E55 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED75219CDD79000D2E55 /* SQLiteDatabase.swift */; };
+		D1091D9B219E234A00949099 /* acceleroMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1091D9A219E234A00949099 /* acceleroMeter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		D102ED6F219CD340000D2E55 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		D102ED72219CD753000D2E55 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D102ED75219CDD79000D2E55 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteDatabase.swift; sourceTree = "<group>"; };
+		D1091D9A219E234A00949099 /* acceleroMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = acceleroMeter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				D102ED6B219CCF23000D2E55 /* DataModel.swift */,
 				D102ED6F219CD340000D2E55 /* DataStore.swift */,
 				D102ED75219CDD79000D2E55 /* SQLiteDatabase.swift */,
+				D1091D9A219E234A00949099 /* acceleroMeter.swift */,
 				D102ED49219CBEDD000D2E55 /* AppDelegate.swift */,
 				D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */,
 				D102ED4D219CBEDD000D2E55 /* DetailViewController.swift */,
@@ -225,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D102ED6E219CD19A000D2E55 /* Constants.swift in Sources */,
+				D1091D9B219E234A00949099 /* acceleroMeter.swift in Sources */,
 				D102ED70219CD340000D2E55 /* DataStore.swift in Sources */,
 				D102ED4E219CBEDD000D2E55 /* DetailViewController.swift in Sources */,
 				D102ED4C219CBEDD000D2E55 /* MasterViewController.swift in Sources */,

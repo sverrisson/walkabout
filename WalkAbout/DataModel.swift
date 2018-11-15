@@ -18,7 +18,7 @@ struct Client: Codable {
 
 // Session er geymir nafn („Labbaði í mat“) og lysingu („Labbaði löngu leiðina, krækti fyrir kelduna“)
 struct Session: Codable {
-    let id: String
+    let id: Int
     let clientID: String
     let at: Date
     let name: String?
@@ -27,10 +27,10 @@ struct Session: Codable {
 
 // Metadata geymir x,y,z accelerometer gögnin sem er safnað.
 struct Metadata: Codable {
-    let id: String
-    let sessionID: String
+    let id: Int
+    let sessionID: Int
     let at: Date
-    let accX: Int
-    let accY: Int
-    let accZ: Int
+    let accX: Double
+    let accY: Double
+    let accZ: Double
 }

@@ -15,6 +15,6 @@ struct Constants {
     static let path = "api/walkabout/"
     static let dbName = "OWappDataBase"
     static let dbExtension = "sqlite"
-    static let accInterval = 100  // ms
+    static let accInterval:TimeInterval = 0.1  // s
 }
 
