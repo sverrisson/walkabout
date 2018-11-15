@@ -14,8 +14,11 @@
 		D102ED53219CBEDD000D2E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D102ED52219CBEDD000D2E55 /* Assets.xcassets */; };
 		D102ED56219CBEDD000D2E55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D102ED54219CBEDD000D2E55 /* LaunchScreen.storyboard */; };
 		D102ED61219CBEDE000D2E55 /* WalkAboutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED60219CBEDE000D2E55 /* WalkAboutTests.swift */; };
-		D102ED6C219CCF23000D2E55 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6B219CCF23000D2E55 /* Model.swift */; };
+		D102ED6C219CCF23000D2E55 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6B219CCF23000D2E55 /* DataModel.swift */; };
 		D102ED6E219CD19A000D2E55 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6D219CD19A000D2E55 /* Constants.swift */; };
+		D102ED70219CD340000D2E55 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6F219CD340000D2E55 /* DataStore.swift */; };
+		D102ED73219CD753000D2E55 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D102ED72219CD753000D2E55 /* libsqlite3.tbd */; };
+		D102ED76219CDD79000D2E55 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED75219CDD79000D2E55 /* SQLiteDatabase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +43,11 @@
 		D102ED5C219CBEDE000D2E55 /* WalkAboutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WalkAboutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D102ED60219CBEDE000D2E55 /* WalkAboutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkAboutTests.swift; sourceTree = "<group>"; };
 		D102ED62219CBEDE000D2E55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D102ED6B219CCF23000D2E55 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		D102ED6B219CCF23000D2E55 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D102ED6D219CD19A000D2E55 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D102ED6F219CD340000D2E55 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		D102ED72219CD753000D2E55 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		D102ED75219CDD79000D2E55 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D102ED73219CD753000D2E55 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +75,7 @@
 				D102ED48219CBEDD000D2E55 /* WalkAbout */,
 				D102ED5F219CBEDE000D2E55 /* WalkAboutTests */,
 				D102ED47219CBEDD000D2E55 /* Products */,
+				D102ED71219CD753000D2E55 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,8 +91,10 @@
 		D102ED48219CBEDD000D2E55 /* WalkAbout */ = {
 			isa = PBXGroup;
 			children = (
-				D102ED6B219CCF23000D2E55 /* Model.swift */,
 				D102ED6D219CD19A000D2E55 /* Constants.swift */,
+				D102ED6B219CCF23000D2E55 /* DataModel.swift */,
+				D102ED6F219CD340000D2E55 /* DataStore.swift */,
+				D102ED75219CDD79000D2E55 /* SQLiteDatabase.swift */,
 				D102ED49219CBEDD000D2E55 /* AppDelegate.swift */,
 				D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */,
 				D102ED4D219CBEDD000D2E55 /* DetailViewController.swift */,
@@ -103,6 +113,14 @@
 				D102ED62219CBEDE000D2E55 /* Info.plist */,
 			);
 			path = WalkAboutTests;
+			sourceTree = "<group>";
+		};
+		D102ED71219CD753000D2E55 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D102ED72219CD753000D2E55 /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,10 +225,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D102ED6E219CD19A000D2E55 /* Constants.swift in Sources */,
+				D102ED70219CD340000D2E55 /* DataStore.swift in Sources */,
 				D102ED4E219CBEDD000D2E55 /* DetailViewController.swift in Sources */,
 				D102ED4C219CBEDD000D2E55 /* MasterViewController.swift in Sources */,
 				D102ED4A219CBEDD000D2E55 /* AppDelegate.swift in Sources */,
-				D102ED6C219CCF23000D2E55 /* Model.swift in Sources */,
+				D102ED6C219CCF23000D2E55 /* DataModel.swift in Sources */,
+				D102ED76219CDD79000D2E55 /* SQLiteDatabase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,9 +8,13 @@
 
 import Foundation
 
+// The following constants allocate all constants used
+
 struct Constants {
     static let server = "https://ossur.com/"
     static let path = "api/walkabout/"
+    static let dbName = "OWappDataBase"
+    static let dbExtension = "sqlite"
     static let accInterval = 100  // ms
 }
 

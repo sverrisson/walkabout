@@ -1,5 +1,5 @@
 //
-//  Model.swift
+//  DataModel.swift
 //  WalkAbout
 //
 //  Created by Hannes Sverrisson on 14/11/2018.
