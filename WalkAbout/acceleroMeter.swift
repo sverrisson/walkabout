@@ -33,7 +33,8 @@ final class AcceleroMeter {
         return Int32(value * 1000)
     }
     
-    func startFor(sessionID: Int32, from id: Int32) {
+    // Start a measurement for given sessionID and Metadata id (if not zero), return acceleration in a callback for ui updates
+    func startFor(sessionID: Int32, from id: Int32, callback: ((CMAcceleration) -> ())? = nil) {
         accelerometerData.removeAll()
         self.sessionID = sessionID
         self.id = id
@@ -53,6 +54,12 @@ final class AcceleroMeter {
             let metaData = Metadata(id: self.id, sessionID: sessionID, at: time, accX: self.toMillig(acc.x), accY: self.toMillig(acc.y), accZ: self.toMillig(acc.z))
             self.accelerometerData.append(metaData)
             self.id += 1
+            // Update the callback on the main thread
+            if let callback = callback {
+                DispatchQueue.main.async {
+                    callback(acc)
+                }
+            }
             if self.accelerometerData.count > self.measurementBuffer {
                 self.saveBufferedData()
             }
