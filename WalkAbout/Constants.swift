@@ -12,6 +12,7 @@ import Foundation
 
 struct Constants {
     static let serverDomainKey = "serverDomainKey"
+    static let sessionIdKeys = "sessionIdKeys"
     static let path = "api/walkabout/"
     static let dbName = "OWappDataBase"
     static let dbExtension = "sqlite"
@@ -46,7 +47,7 @@ ClientID CHAR(36) NOT NULL REFERENCES Client(ID),
 At datetime,
 Name VARCHAR(55),
 Description TEXT,
-FOREIGN KEY (ClientID) REFERENCES Client(ID)
+Saved INTEGER
 );
 
 -- Table: Metadata
@@ -57,8 +58,7 @@ SessionID INTEGER NOT NULL REFERENCES Session(ID),
 At datetime,
 AccX INTEGER,
 AccY INTEGER,
-AccZ INTEGER,
-FOREIGN KEY (SessionID) REFERENCES MSession(ID)
+AccZ INTEGER
 );
 
 COMMIT TRANSACTION;

@@ -29,6 +29,7 @@ struct Session: Codable {
     let at: Date
     let name: String
     let description: String?
+    let saved: Bool
 }
 
 // Metadata geymir x,y,z accelerometer gögnin sem er safnað.

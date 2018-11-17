@@ -58,26 +58,33 @@ final class DataStore {
         let type = DeviceInfo.deviceType()
         let systemVersion = UIDevice.current.systemVersion
         let client = Client(id: uuid, at: Date(), name: name, type: type, systemVersion: systemVersion)
-        print(client)
         do {
             let stmt = try dbConnection.prepare("INSERT INTO Client (ID, At, Name, Type, SystemVersion) VALUES (?, ?, ?, ?, ?)")
-            try stmt.run(client.id, toISODate(date: client.at), client.name, client.type, client.systemVersion)
+            try stmt.run(client.id,
+                         toISODate(date: client.at),
+                         client.name,
+                         client.type,
+                         client.systemVersion)
             os_log("Client created in database", type: .error)
         } catch {
             os_log("Couldn't create Client in database", type: .error)
+            fatalError()
         }
     }
     
     func readClient() -> Client? {
         do {
-            for row in try dbConnection.prepare("SELECT ID, at, name, type, systemVersion FROM Client") {
+            for row in try dbConnection.prepare("SELECT ID, At, Name, Type, SystemVersion FROM Client") {
                 return Client(id: row[0] as? String ?? "",
                               at: dateFormatter.date(from: row[1] as! String) ?? Date(),
-                              name: (row[2] ?? "") as! String, type: (row[3] ?? "") as! String, systemVersion: (row[4] ?? "") as! String)
+                              name: (row[2] ?? "") as! String,
+                              type: (row[3] ?? "") as! String,
+                              systemVersion: (row[4] ?? "") as! String)
             }
-            os_log("Client created in database", type: .error)
+            os_log("Client read from database", type: .error)
         } catch {
-            os_log("Couldn't create Client in database", type: .error)
+            os_log("Couldn't read Client in database", type: .error)
+            fatalError()
         }
         return nil
     }
@@ -85,25 +92,80 @@ final class DataStore {
     // Store session in the database.
     func storeSession(session: Session) {
         do {
-            let stmt = try dbConnection.prepare("INSERT INTO MSession (ID, clientID, at, name, description) VALUES (?, ?, ?, ?, ?)")
-            try stmt.run(Int(session.id), Int(session.clientID), toISODate(date: session.at), session.name, session.description)
+            let stmt = try dbConnection.prepare("INSERT INTO MSession (ID, ClientID, At, Name, Description, Saved) VALUES (?, ?, ?, ?, ?, ?)")
+            try stmt.run(Int(session.id),
+                         Int(session.clientID),
+                         toISODate(date: session.at),
+                         session.name,
+                         session.description,
+                         session.saved ? 1 :0)
             os_log("Session created in database", type: .error)
         } catch {
             os_log("Couldn't create Session in database", type: .error)
+            fatalError()
         }
+    }
+    
+    func readSession() -> Session? {
+        do {
+            for row in try dbConnection.prepare("SELECT ID, ClientID, At, Name, Description, Saved FROM MSession") {
+                return Session(id: row[0] as! Int32,
+                               clientID: row[1] as! String,
+                               at: dateFormatter.date(from: row[2] as! String) ?? Date(),
+                               name: row[3] as! String,
+                               description: (row[4] ?? "") as? String,
+                               saved: ((row[5] ?? 0) as! Int)==1 ? true : false)
+            }
+            os_log("Session read from database", type: .error)
+        } catch {
+            os_log("Couldn't read Session from database", type: .error)
+            fatalError()
+        }
+        return nil
     }
     
     // Store Metadata in the database.
     func storeMetadata(data: Metadata) {
         do {
-            let stmt = try dbConnection.prepare("INSERT INTO Metadata (ID, sessionID, at, accX, accY, accZ) VALUES (?, ?, ?, ?, ?, ?)")
-            try stmt.run(Int(data.id), Int(data.sessionID), toISODate(date: data.at), Int(data.accX), Int(data.accY), Int(data.accZ))
+            let stmt = try dbConnection.prepare("INSERT INTO Metadata (ID, SessionID, At, AccX, AccY, AccZ) VALUES (?, ?, ?, ?, ?, ?)")
+            try stmt.run(Int(data.id),
+                         Int(data.sessionID),
+                         toISODate(date: data.at),
+                         Int(data.accX),
+                         Int(data.accY),
+                         Int(data.accZ))
             os_log("Metadata created in database", type: .error)
         } catch {
             os_log("Couldn't create Metadata in database", type: .error)
+            fatalError()
         }
     }
     
+    func readMetadataFor(sessionID: Int32) -> [Metadata]? {
+        do {
+            var metadata: [Metadata] = []
+            let stmts = try dbConnection.prepare("SELECT * FROM Metadata WHERE SessionID = ? LIMIT 2400", Int(sessionID))
+            os_log("Metadata read from database", type: .error)
+            stmts.forEach { (row) in
+                let meta = Metadata(id: row[0] as! Int32,
+                                    sessionID: row[1] as! Int32,
+                                    at: dateFormatter.date(from: row[2] as! String) ?? Date(),
+                                    accX: row[3] as! Int32,
+                                    accY: row[4] as! Int32,
+                                    accZ: row[5] as! Int32)
+                metadata.append(meta)
+            }
+            return metadata
+        } catch {
+            os_log("Couldn't create Metadata in database", type: .error)
+            fatalError()
+        }
+    }
     
+    // Sends data to the cloud for the given session and deletes the data if successful
+    func sendToCloud(session: Session, callback: (Bool) -> ()) {
+        //FIXME: Send to cloud
+        callback(true)
+    }
     
 }

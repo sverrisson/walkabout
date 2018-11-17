@@ -8,12 +8,19 @@
 
 import UIKit
 import os
+import SQLite
 
-class SessionViewController: UITableViewController {
+class SessionsViewController: UITableViewController {
     var detailViewController: DetailViewController? = nil
-    var sessions:[(name: String, description: String)] = []
+    var sessions:[Session] = []
     var dataStore = DataStore.shared
-    private var dateFormatter = ISO8601DateFormatter()
+    private var dateFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone.current
+        return formatter
+    }()
+    private var lastSessionID: Int32 = 0
+    private var client: Client?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,17 +33,12 @@ class SessionViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         if let client = dataStore.readClient() {
+            self.client = client
             os_log("Client: %@", type: .debug, client.description)
-        }
-        
-        DispatchQueue.main.async {
-            let acc = AcceleroMeter.shared
-            acc.startFor(sessionID: 123, from: 0)
         }
         super.viewDidAppear(animated)
     }
@@ -62,7 +64,7 @@ class SessionViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alert] (_) in
             // Save the date and time if the user returns the field empty
             var name = self.dateFormatter.string(from: Date())
-            var description = self.dateFormatter.string(from: Date())
+            var description = ""
             if let textFields = alert?.textFields {
                 textFields.forEach({ (textField) in
                     if let text = textField.text, text.count > 0 {
@@ -75,15 +77,40 @@ class SessionViewController: UITableViewController {
                     }
                 })
             }
-            self.insertNewSession(session: (name: name, description: description))
+            // Create Session
+            let defaults = UserDefaults.standard
+            if defaults.integer(forKey: Constants.sessionIdKeys) > 0 {
+                self.lastSessionID = Int32(defaults.integer(forKey: Constants.sessionIdKeys))
+            }
+            if let client = self.client {
+                let session = Session(id: self.lastSessionID + 1, clientID: client.id, at: Date(), name: name, description: description, saved: false)
+                self.insertNewSession(session: session)
+                self.dataStore.storeSession(session: session)
+            } else {
+                if let client = self.dataStore.readClient() {
+                    self.client = client
+                    let session = Session(id: self.lastSessionID + 1, clientID: client.id, at: Date(), name: name, description: description, saved: false)
+                    self.insertNewSession(session: session)
+                    self.dataStore.storeSession(session: session)
+                }
+            }
         }))
         self.present(alert, animated: true, completion: nil)
     }
 
-    func insertNewSession(session: (name: String, description: String)) {
+    func insertNewSession(session: Session) {
         sessions.insert(session, at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    func replaceSession(session: Session) {
+        if let selected = tableView.indexPathForSelectedRow {
+            sessions[selected.item] = session
+            tableView.reloadRows(at: [selected], with: .automatic)
+        } else {
+            fatalError()
+        }
     }
 
     // MARK: - Segues
@@ -93,7 +120,7 @@ class SessionViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let session = sessions[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = session
+                controller.session = session
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -115,6 +142,11 @@ class SessionViewController: UITableViewController {
 
         let session = sessions[indexPath.row]
         cell.textLabel!.text = session.name
+        if session.saved {
+            cell.tintColor = .green
+        } else {
+            cell.tintColor = .red
+        }
         return cell
     }
 

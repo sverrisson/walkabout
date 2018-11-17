@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D102ED4A219CBEDD000D2E55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED49219CBEDD000D2E55 /* AppDelegate.swift */; };
-		D102ED4C219CBEDD000D2E55 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */; };
+		D102ED4C219CBEDD000D2E55 /* SessionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED4B219CBEDD000D2E55 /* SessionsViewController.swift */; };
 		D102ED4E219CBEDD000D2E55 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED4D219CBEDD000D2E55 /* DetailViewController.swift */; };
 		D102ED51219CBEDD000D2E55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D102ED4F219CBEDD000D2E55 /* Main.storyboard */; };
 		D102ED53219CBEDD000D2E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D102ED52219CBEDD000D2E55 /* Assets.xcassets */; };
@@ -17,11 +17,10 @@
 		D102ED6C219CCF23000D2E55 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6B219CCF23000D2E55 /* DataModel.swift */; };
 		D102ED6E219CD19A000D2E55 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6D219CD19A000D2E55 /* Constants.swift */; };
 		D102ED70219CD340000D2E55 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D102ED6F219CD340000D2E55 /* DataStore.swift */; };
-		D1091D9B219E234A00949099 /* acceleroMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1091D9A219E234A00949099 /* acceleroMeter.swift */; };
+		D1091D9B219E234A00949099 /* AcceleroMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1091D9A219E234A00949099 /* AcceleroMeter.swift */; };
 		D120D89021A0633400F477A5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D120D88921A0633400F477A5 /* Settings.bundle */; };
 		D120D89221A0666400F477A5 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120D89121A0666400F477A5 /* NetworkClient.swift */; };
 		D120D89421A06E1100F477A5 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120D89321A06E1100F477A5 /* DeviceInfo.swift */; };
-		D18DBA5D219FA02400416522 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; };
 		D18DBA5E219FA04800416522 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; };
 		D18DBA5F219FA04800416522 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -109,7 +108,7 @@
 /* Begin PBXFileReference section */
 		D102ED46219CBEDD000D2E55 /* WalkAbout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WalkAbout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D102ED49219CBEDD000D2E55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		D102ED4B219CBEDD000D2E55 /* SessionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsViewController.swift; sourceTree = "<group>"; };
 		D102ED4D219CBEDD000D2E55 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D102ED50219CBEDD000D2E55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D102ED52219CBEDD000D2E55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,7 +121,7 @@
 		D102ED6D219CD19A000D2E55 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D102ED6F219CD340000D2E55 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		D102ED72219CD753000D2E55 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		D1091D9A219E234A00949099 /* acceleroMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = acceleroMeter.swift; sourceTree = "<group>"; };
+		D1091D9A219E234A00949099 /* AcceleroMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceleroMeter.swift; sourceTree = "<group>"; };
 		D120D88921A0633400F477A5 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D120D89121A0666400F477A5 /* NetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		D120D89321A06E1100F477A5 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
@@ -135,7 +134,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D18DBA5E219FA04800416522 /* SQLite.framework in Frameworks */,
-				D18DBA5D219FA02400416522 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,9 +176,9 @@
 				D120D89121A0666400F477A5 /* NetworkClient.swift */,
 				D102ED6F219CD340000D2E55 /* DataStore.swift */,
 				D120D89321A06E1100F477A5 /* DeviceInfo.swift */,
-				D1091D9A219E234A00949099 /* acceleroMeter.swift */,
+				D1091D9A219E234A00949099 /* AcceleroMeter.swift */,
 				D102ED49219CBEDD000D2E55 /* AppDelegate.swift */,
-				D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */,
+				D102ED4B219CBEDD000D2E55 /* SessionsViewController.swift */,
 				D102ED4D219CBEDD000D2E55 /* DetailViewController.swift */,
 				D102ED4F219CBEDD000D2E55 /* Main.storyboard */,
 				D102ED52219CBEDD000D2E55 /* Assets.xcassets */,
@@ -273,6 +271,11 @@
 				TargetAttributes = {
 					D102ED45219CBEDD000D2E55 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					D102ED5B219CBEDE000D2E55 = {
 						CreatedOnToolsVersion = 10.1;
@@ -384,10 +387,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D102ED6E219CD19A000D2E55 /* Constants.swift in Sources */,
-				D1091D9B219E234A00949099 /* acceleroMeter.swift in Sources */,
+				D1091D9B219E234A00949099 /* AcceleroMeter.swift in Sources */,
 				D102ED70219CD340000D2E55 /* DataStore.swift in Sources */,
 				D102ED4E219CBEDD000D2E55 /* DetailViewController.swift in Sources */,
-				D102ED4C219CBEDD000D2E55 /* MasterViewController.swift in Sources */,
+				D102ED4C219CBEDD000D2E55 /* SessionsViewController.swift in Sources */,
 				D102ED4A219CBEDD000D2E55 /* AppDelegate.swift in Sources */,
 				D102ED6C219CCF23000D2E55 /* DataModel.swift in Sources */,
 				D120D89421A06E1100F477A5 /* DeviceInfo.swift in Sources */,
