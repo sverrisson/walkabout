@@ -20,6 +20,7 @@
 		D1091D9B219E234A00949099 /* acceleroMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1091D9A219E234A00949099 /* acceleroMeter.swift */; };
 		D120D89021A0633400F477A5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D120D88921A0633400F477A5 /* Settings.bundle */; };
 		D120D89221A0666400F477A5 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120D89121A0666400F477A5 /* NetworkClient.swift */; };
+		D120D89421A06E1100F477A5 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120D89321A06E1100F477A5 /* DeviceInfo.swift */; };
 		D18DBA5D219FA02400416522 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; };
 		D18DBA5E219FA04800416522 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; };
 		D18DBA5F219FA04800416522 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -124,6 +125,7 @@
 		D1091D9A219E234A00949099 /* acceleroMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = acceleroMeter.swift; sourceTree = "<group>"; };
 		D120D88921A0633400F477A5 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D120D89121A0666400F477A5 /* NetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		D120D89321A06E1100F477A5 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		D18DBA45219F9FF800416522 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,6 +177,7 @@
 				D102ED6B219CCF23000D2E55 /* DataModel.swift */,
 				D120D89121A0666400F477A5 /* NetworkClient.swift */,
 				D102ED6F219CD340000D2E55 /* DataStore.swift */,
+				D120D89321A06E1100F477A5 /* DeviceInfo.swift */,
 				D1091D9A219E234A00949099 /* acceleroMeter.swift */,
 				D102ED49219CBEDD000D2E55 /* AppDelegate.swift */,
 				D102ED4B219CBEDD000D2E55 /* MasterViewController.swift */,
@@ -387,6 +390,7 @@
 				D102ED4C219CBEDD000D2E55 /* MasterViewController.swift in Sources */,
 				D102ED4A219CBEDD000D2E55 /* AppDelegate.swift in Sources */,
 				D102ED6C219CCF23000D2E55 /* DataModel.swift in Sources */,
+				D120D89421A06E1100F477A5 /* DeviceInfo.swift in Sources */,
 				D120D89221A0666400F477A5 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

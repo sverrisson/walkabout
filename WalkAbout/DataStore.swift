@@ -55,9 +55,10 @@ final class DataStore {
     func storeClient() {
         let uuid = UUID().uuidString
         let name = UIDevice.current.name
-        let type = UIDevice.current.model
+        let type = DeviceInfo.deviceType()
         let systemVersion = UIDevice.current.systemVersion
         let client = Client(id: uuid, at: Date(), name: name, type: type, systemVersion: systemVersion)
+        print(client)
         do {
             let stmt = try dbConnection.prepare("INSERT INTO Client (ID, At, Name, Type, SystemVersion) VALUES (?, ?, ?, ?, ?)")
             try stmt.run(client.id, toISODate(date: client.at), client.name, client.type, client.systemVersion)
@@ -72,7 +73,7 @@ final class DataStore {
             for row in try dbConnection.prepare("SELECT ID, at, name, type, systemVersion FROM Client") {
                 return Client(id: row[0] as? String ?? "",
                               at: dateFormatter.date(from: row[1] as! String) ?? Date(),
-                              name: (row[2] ?? "") as! String, type: (row[3] ?? "") as! String, systemVersion: (row[3] ?? "") as! String)
+                              name: (row[2] ?? "") as! String, type: (row[3] ?? "") as! String, systemVersion: (row[4] ?? "") as! String)
             }
             os_log("Client created in database", type: .error)
         } catch {

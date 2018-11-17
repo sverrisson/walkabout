@@ -10,12 +10,16 @@ import Foundation
 import SQLite
 
 // Client geymir upplýsingar um símann eða ipadinn.  Nauðsynlegt að ID sé GUID eða sambærilegt sem er bundið við þetta tæki.  Viljum ekki lenda í vandræðum ef 2 clienter fá sama ID þegar við byrjum replication.  Sama á við um önnur ID.  Viljum líka vita hvað tækið heitir („Síminn hans Stjána“) og tegund („Iphone 6s“)
-struct Client: Codable {
+struct Client: Codable, CustomStringConvertible {
     let id: String
     let at: Date
     let name: String
     let type: String
     let systemVersion: String
+    
+    var description: String {
+        return "(id: \(id), at: \(at.description), name: \(name), type: \(type), version: \(systemVersion))"
+    }
 }
 
 // Session er geymir nafn („Labbaði í mat“) og lysingu („Labbaði löngu leiðina, krækti fyrir kelduna“)

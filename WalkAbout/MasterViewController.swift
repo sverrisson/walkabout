@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os
 
 class SessionViewController: UITableViewController {
     var detailViewController: DetailViewController? = nil
@@ -25,11 +26,14 @@ class SessionViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
-        // Prepare the database
-        dataStore.storeClient()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        if let client = dataStore.readClient() {
+            os_log("Client: %@", type: .debug, client.description)
+        }
+        
         DispatchQueue.main.async {
             let acc = AcceleroMeter.shared
             acc.startFor(sessionID: 123, from: 0)
