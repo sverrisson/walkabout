@@ -9,9 +9,9 @@
 import UIKit
 
 class SessionViewController: UITableViewController {
-
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
+    var dataStore = DataStore.shared
 
 
     override func viewDidLoad() {
@@ -25,14 +25,20 @@ class SessionViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
-        
-        
+        // Prepare the database
+        dataStore.storeClient()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            let acc = AcceleroMeter.shared
+            acc.startFor(sessionID: 123, from: 0)
+        }
+        super.viewDidAppear(animated)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
-        let acc = AcceleroMeter.shared
-        acc.startFor(sessionID: 123)
         super.viewWillAppear(animated)
     }
 

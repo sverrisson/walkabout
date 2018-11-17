@@ -12,27 +12,33 @@ import os
 
 final class AcceleroMeter {
     static let shared = AcceleroMeter()
-    var motionManager: CMMotionManager!
+    var motionManager = CMMotionManager()
+    let measurementBuffer = 100
     var accelerometerData: [Metadata] = []
-    var sessionID: Int!
-    var id: Int = 0
+    var sessionID: Int32!
+    var id: Int32 = 0
+    var dataStore = DataStore.shared
     
     init() {
         os_log("AccelerometerData Init", type: .info)
-        motionManager = CMMotionManager()
+        accelerometerData.reserveCapacity(measurementBuffer + 1)
         motionManager.accelerometerUpdateInterval = Constants.accInterval
         if !(motionManager.isAccelerometerAvailable) {
             os_log("AccelerometerData Not Available", type: .error)
         }
     }
     
-    func startFor(sessionID: Int) {
+    // Data is stored as milli-g
+    fileprivate func toMillig(_ value: Double) -> Int32 {
+        return Int32(value * 1000)
+    }
+    
+    func startFor(sessionID: Int32, from id: Int32) {
+        accelerometerData.removeAll()
         self.sessionID = sessionID
-        guard let motionManager = motionManager else {
-            os_log("AccelerometerData Error", type: .error)
-            return
-        }
-        motionManager.startAccelerometerUpdates(to: .main) { (accelerometerData, error) in
+        self.id = id
+        motionManager.startAccelerometerUpdates(to: OperationQueue.main) { (accelerometerData, error) in
+            dispatchPrecondition(condition: .onQueue(.main))
             guard let accData = accelerometerData else {
                 if let error = error {
                     os_log("AccelerometerData Error: %@", type: .error, error.localizedDescription)
@@ -42,16 +48,47 @@ final class AcceleroMeter {
                 self.stopAndSaveData()
                 return
             }
-            print("joi")
             let time = Date(timeIntervalSinceReferenceDate: accData.timestamp)
             let acc = accData.acceleration
-            let metaData = Metadata(id: self.id, sessionID: sessionID, at: time, accX: acc.x, accY: acc.y, accZ: acc.z)
+            let metaData = Metadata(id: self.id, sessionID: sessionID, at: time, accX: self.toMillig(acc.x), accY: self.toMillig(acc.y), accZ: self.toMillig(acc.z))
+            self.accelerometerData.append(metaData)
             self.id += 1
-            print(metaData)
+            if self.accelerometerData.count > self.measurementBuffer {
+                self.saveBufferedData()
+            }
         }
     }
     
+    // Save buffered data and clear
+    fileprivate func saveBufferedData() {
+        // Take a local copy so that data collection continues uninterrupted
+        let dataToSave = accelerometerData
+        accelerometerData.removeAll()
+        // Save the data by calling dataStore on the main queue
+        DispatchQueue.main.async {
+            dataToSave.forEach { (metadata) in
+                self.dataStore.storeMetadata(data: metadata)
+            }
+            os_log("AccelerometerData Saved", type: .debug)
+        }
+    }
+    
+    // Stop receiving Acc. data and save remaining data, always called from main queue
     func stopAndSaveData() {
-        os_log("AccelerometerData Stopped", type: .info)
+        // This is called from the ui and thus, should be on the main queue
+        dispatchPrecondition(condition: .onQueue(.main))
+        // Stop receiving Acc. data
+        if (motionManager.isAccelerometerActive) {
+            motionManager.stopAccelerometerUpdates()
+            os_log("AccelerometerData Stopped", type: .info)
+        }
+        if !accelerometerData.isEmpty {
+            // Save and then clear
+            accelerometerData.forEach { (metadata) in
+                self.dataStore.storeMetadata(data: metadata)
+            }
+            os_log("AccelerometerData Saved", type: .debug)
+            accelerometerData.removeAll()
+        }
     }
 }
