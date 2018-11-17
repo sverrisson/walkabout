@@ -9,24 +9,25 @@
 import Foundation
 import os
 import SQLite
+import UIKit
 
 // DataStore is a singleton to isolate all data store communication from the actual database
 
 final class DataStore {
     static let shared = DataStore()
-    var dbConnection: Connection!
-    var dateFormatter: ISO8601DateFormatter = {
+    private var dbConnection: Connection!
+    private var dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = .withInternetDateTime
         return formatter
     }()
     
-    func toISODate(date: Date) -> String {
+    private func toISODate(date: Date) -> String {
         print(dateFormatter.string(from: date))
         return dateFormatter.string(from: date)
     }
     
-    init() {
+    private init() {
         // Set up connection with sqlite and create the database if needed
         let fileMgr = FileManager.default
         if let databaseDir = try? fileMgr.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
@@ -53,10 +54,13 @@ final class DataStore {
     // Generates initial data on the client, and updates client info.
     func storeClient() {
         let uuid = UUID().uuidString
-        let client = Client(id: uuid, at: Date(), name: "Joi", type: "Iphone")
+        let name = UIDevice.current.name
+        let type = UIDevice.current.model
+        let systemVersion = UIDevice.current.systemVersion
+        let client = Client(id: uuid, at: Date(), name: name, type: type, systemVersion: systemVersion)
         do {
-            let stmt = try dbConnection.prepare("INSERT INTO Client (ID, at, name, type) VALUES (?, ?, ?, ?)")
-            try stmt.run(client.id, toISODate(date: client.at), client.name, client.type)
+            let stmt = try dbConnection.prepare("INSERT INTO Client (ID, At, Name, Type, SystemVersion) VALUES (?, ?, ?, ?, ?)")
+            try stmt.run(client.id, toISODate(date: client.at), client.name, client.type, client.systemVersion)
             os_log("Client created in database", type: .error)
         } catch {
             os_log("Couldn't create Client in database", type: .error)
@@ -65,10 +69,10 @@ final class DataStore {
     
     func readClient() -> Client? {
         do {
-            for row in try dbConnection.prepare("SELECT ID, at, name, type FROM Client") {
+            for row in try dbConnection.prepare("SELECT ID, at, name, type, systemVersion FROM Client") {
                 return Client(id: row[0] as? String ?? "",
                               at: dateFormatter.date(from: row[1] as! String) ?? Date(),
-                              name: row[2] as? String, type: row[3] as? String)
+                              name: (row[2] ?? "") as! String, type: (row[3] ?? "") as! String, systemVersion: (row[3] ?? "") as! String)
             }
             os_log("Client created in database", type: .error)
         } catch {

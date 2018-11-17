@@ -13,8 +13,9 @@ import SQLite
 struct Client: Codable {
     let id: String
     let at: Date
-    let name: String?
-    let type: String?
+    let name: String
+    let type: String
+    let systemVersion: String
 }
 
 // Session er geymir nafn („Labbaði í mat“) og lysingu („Labbaði löngu leiðina, krækti fyrir kelduna“)
@@ -22,7 +23,7 @@ struct Session: Codable {
     let id: Int32
     let clientID: String
     let at: Date
-    let name: String?
+    let name: String
     let description: String?
 }
 
