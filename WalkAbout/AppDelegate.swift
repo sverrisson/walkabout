@@ -12,9 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-
+    var dataStore = DataStore.shared
+    var networkClient = NetworkClient.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Check Server Domain set in settings
+        let defaults = UserDefaults.standard
+        let serverDomain = defaults.string(forKey: Constants.serverDomainKey)
+        networkClient.serverDomain = serverDomain
+        
         // Override point for customization after application launch.
         let splitViewController = window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController

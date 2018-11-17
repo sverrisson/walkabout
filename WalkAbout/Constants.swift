@@ -11,7 +11,7 @@ import Foundation
 // The following constants allocate all constants used
 
 struct Constants {
-    static let server = "https://ossur.com/"
+    static let serverDomainKey = "serverDomainKey"
     static let path = "api/walkabout/"
     static let dbName = "OWappDataBase"
     static let dbExtension = "sqlite"
@@ -24,9 +24,9 @@ struct Constants {
 BEGIN TRANSACTION;
 
 -- CREATE DATABASE Walkabout;
--- DROP TABLE IF EXISTS Client;
--- DROP TABLE IF EXISTS MSession;
--- DROP TABLE IF EXISTS Metadata;
+DROP TABLE IF EXISTS Client;
+DROP TABLE IF EXISTS MSession;
+DROP TABLE IF EXISTS Metadata;
 
 -- Table: Client
 CREATE TABLE IF NOT EXISTS Client

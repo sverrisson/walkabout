@@ -10,13 +10,9 @@ import UIKit
 
 class SessionViewController: UITableViewController {
     var detailViewController: DetailViewController? = nil
-    var sessions:[String] = []
+    var sessions:[(name: String, description: String)] = []
     var dataStore = DataStore.shared
-    private var dateFormatter: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = .withInternetDateTime
-        return formatter
-    }()
+    private var dateFormatter = ISO8601DateFormatter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,23 +44,40 @@ class SessionViewController: UITableViewController {
     
     @objc
     func getName(_ sender: Any) {
-        let alert = UIAlertController(title: "Session Name?", message: "Give the session a descriptive name", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Session Name?", message: "Give the session a name and a description:", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.text = ""
+            textField.placeholder = "Name"
+            textField.tag = 1
+        }
+        alert.addTextField { (textField) in
+            textField.text = ""
+            textField.placeholder = "Description"
+            textField.tag = 2
         }
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alert] (_) in
+            // Save the date and time if the user returns the field empty
             var name = self.dateFormatter.string(from: Date())
-            if let textField = alert?.textFields?.first, let text = textField.text {
-                print("Text field: \(text)")
-                name = text
+            var description = self.dateFormatter.string(from: Date())
+            if let textFields = alert?.textFields {
+                textFields.forEach({ (textField) in
+                    if let text = textField.text, text.count > 0 {
+                        print("Text field: \(text)")
+                        if textField.tag == 1 {
+                            name = text
+                        } else {
+                            description = text
+                        }
+                    }
+                })
             }
-            self.insertNewSession(title: name)
+            self.insertNewSession(session: (name: name, description: description))
         }))
         self.present(alert, animated: true, completion: nil)
     }
 
-    func insertNewSession(title: String) {
-        sessions.insert(title, at: 0)
+    func insertNewSession(session: (name: String, description: String)) {
+        sessions.insert(session, at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
@@ -97,7 +110,7 @@ class SessionViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let session = sessions[indexPath.row]
-        cell.textLabel!.text = session
+        cell.textLabel!.text = session.name
         return cell
     }
 
