@@ -67,7 +67,6 @@ final class DataStore {
             os_log("Client created in database", type: .error)
         } catch {
             os_log("Couldn't create Client in database", type: .error)
-            fatalError()
         }
     }
     
@@ -83,14 +82,12 @@ final class DataStore {
             os_log("Client read from database", type: .error)
         } catch {
             os_log("Couldn't read Client in database", type: .error)
-            fatalError()
         }
         return nil
     }
     
     // Store session in the database.
     func storeSession(session: Session) {
-        debugPrint(session.debugDescription)
         do {
             let stmt = try dbConnection.prepare("INSERT INTO MSession (ID, ClientID, At, Name, Description, Saved) VALUES (?, ?, ?, ?, ?, ?)")
             try stmt.run(Int(session.id),
@@ -102,7 +99,18 @@ final class DataStore {
             os_log("Session created in database", type: .error)
         } catch {
             os_log("Couldn't create Session in database", type: .error)
-            fatalError()
+        }
+    }
+    
+    // Update a session in the database.
+    func updateSession(session: Session) {
+        guard session.saved else {return}
+        do {
+            let stmt = try dbConnection.prepare("UPDATE MSession SET Saved = 1 WHERE ID = ?")
+            try stmt.run(Int(session.id))
+            os_log("Session updated in database", type: .error)
+        } catch {
+            os_log("Couldn't update Session in database", type: .error)
         }
     }
     
@@ -128,7 +136,6 @@ final class DataStore {
             }
         } catch {
             os_log("Couldn't read sessions from database", type: .error)
-            fatalError()
         }
         return nil
     }
@@ -147,7 +154,6 @@ final class DataStore {
             os_log("Metadata created in database", type: .info)
         } catch {
             os_log("Couldn't create Metadata in database", type: .error)
-            fatalError()
         }
     }
     
@@ -173,7 +179,6 @@ final class DataStore {
             }
         } catch {
             os_log("Couldn't read Metadata from database", type: .error)
-            fatalError()
         }
         return nil
     }

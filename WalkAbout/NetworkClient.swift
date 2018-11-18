@@ -68,6 +68,13 @@ class NetworkClient {
     
     // Send data and return the success
     func sendDataSynchronously(_ uploadData: Data) -> Bool {
+        // Check if Server Domain has changed in settings
+        let defaults = UserDefaults.standard
+        if let serverDomain = defaults.string(forKey: Constants.serverDomainKey) {
+            os_log("Server domain from settings: %@", type: .info, serverDomain)
+            self.serverDomain = serverDomain
+        }
+        
         let href: String = serverDomain + pathname
         let semaphore = DispatchSemaphore(value: 0)
         var success = false

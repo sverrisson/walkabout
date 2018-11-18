@@ -43,14 +43,14 @@ class DetailViewController: UIViewController {
             }
             if session.saved {
                 cloudButton.isEnabled = false
-                cloudButton.setTitle("Saved", for: .normal)
+                cloudButton.setTitle("Saved", for: .disabled)
             } else {
                 cloudButton.isEnabled = true
                 cloudButton.setTitle("Save to Cloud", for: .normal)
             }
             // Disable stop button and start if not available
             stopButton.isEnabled = false
-            cloudButton.isEnabled = false
+    
             if accMeter.isAvailable() {
                 startButton.isEnabled = true
             } else {
@@ -70,9 +70,16 @@ class DetailViewController: UIViewController {
         configureView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureView()
+    }
+    
     @IBAction func startRecordingData(_:Any) {
         stopButton.isEnabled = true
         startButton.isEnabled = false
+        cloudButton.isEnabled = false
+        cloudButton.setTitle("Save to Cloud", for: .disabled)
         guard let session = session else {return}
         var startFrom = 4000000 * session.id
         if let sessions = dataStore.readMetadataFor(sessionID: session.id), let lastSession = sessions.last {
@@ -106,6 +113,21 @@ class DetailViewController: UIViewController {
                 self.cloudButton.isEnabled = false
                 self.cloudButton.setTitle("Saved", for: .disabled)
                 self.session = newSession
+                self.returnSession()
+            } else {
+                // Alert the user of the failure
+                let alert = UIAlertController(title: "Not Saved!", message: "Failed in sending the Session data to the server.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Make successful", style: .destructive, handler: { [weak self] (_) in
+                    guard let self = self else {return}
+                    // Mark session saved
+                    let newSession = Session(id: session.id, clientID: session.clientID, at: session.at, name: session.name, description: session.description, saved: true)
+                    self.cloudButton.isEnabled = false
+                    self.cloudButton.setTitle("Saved", for: .disabled)
+                    self.session = newSession
+                    self.returnSession()
+                }))
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
             self.activityIndicator.stopAnimating()
         }
@@ -114,13 +136,12 @@ class DetailViewController: UIViewController {
     // MARK: - Segues
     
     // Return the session if it has been saved
-    override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
+    func returnSession() {
         guard let session = self.session else {return}
-        if session.saved {
-            if let nav = subsequentVC as? UINavigationController {
-                if let master = nav.topViewController as? SessionsViewController {
-                    master.replaceSession(session: session)
-                }
+        dataStore.updateSession(session: session)
+        if let splitVC = self.splitViewController, let nav = splitVC.viewControllers.first as? UINavigationController {
+            if let sessionsVC = nav.viewControllers.first as? SessionsViewController {
+                sessionsVC.replaceSession(session: session)
             }
         }
     }

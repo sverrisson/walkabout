@@ -35,8 +35,9 @@ class SessionsViewController: UITableViewController {
         }
         
         // Import all stored sessions
-        if let sessions = dataStore.readAllSessions() {
+        if let sessions = dataStore.readAllSessions(), let last = sessions.last {
             self.sessions = sessions
+            lastSessionID = last.id
         }
     }
     
@@ -116,8 +117,6 @@ class SessionsViewController: UITableViewController {
         if let selected = tableView.indexPathForSelectedRow {
             sessions[selected.item] = session
             tableView.reloadRows(at: [selected], with: .automatic)
-        } else {
-            fatalError()
         }
     }
 
