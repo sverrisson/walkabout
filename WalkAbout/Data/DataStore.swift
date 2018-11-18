@@ -104,10 +104,10 @@ final class DataStore {
     
     // Update a session in the database.
     func updateSession(session: Session) {
-        guard session.saved else {return}
         do {
-            let stmt = try dbConnection.prepare("UPDATE MSession SET Saved = 1 WHERE ID = ?")
-            try stmt.run(Int(session.id))
+            let stmt = try dbConnection.prepare("UPDATE MSession SET Saved = ? WHERE ID = ?")
+            try stmt.run(session.saved ? 1 : 0,
+                         Int(session.id))
             os_log("Session updated in database", type: .error)
         } catch {
             os_log("Couldn't update Session in database", type: .error)

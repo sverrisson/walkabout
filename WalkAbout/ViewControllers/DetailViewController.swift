@@ -81,6 +81,12 @@ class DetailViewController: UIViewController {
         cloudButton.isEnabled = false
         cloudButton.setTitle("Save to Cloud", for: .disabled)
         guard let session = session else {return}
+        
+        // Update session to not saved
+        let newSession = Session(id: session.id, clientID: session.clientID, at: session.at, name: session.name, description: session.description, saved: false)
+        self.session = newSession
+        dataStore.updateSession(session: newSession)
+        returnSession()
         var startFrom = 4000000 * session.id
         if let sessions = dataStore.readMetadataFor(sessionID: session.id), let lastSession = sessions.last {
             startFrom = lastSession.id + 1
@@ -93,6 +99,7 @@ class DetailViewController: UIViewController {
             self.yBar.progress = Float(acc.y / range)
             self.zBar.progress = Float(acc.z / range)
         }
+        stopButton.isEnabled = true
     }
     
     @IBAction func stopRecording(_:Any) {
