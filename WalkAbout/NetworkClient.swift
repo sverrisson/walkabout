@@ -82,18 +82,18 @@ class NetworkClient {
             let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
                 if let error = error {
                     os_log("POST error: %@", type: .error, error.localizedDescription)
-                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+                    semaphore.signal()
                     return
                 }
                 guard let response = response as? HTTPURLResponse else {
                     os_log("POST Server error", type: .error)
-                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+                    semaphore.signal()
                     return
                 }
                 os_log("Server statusCode: %li", type: .debug, response.statusCode)
                 guard (200...299).contains(response.statusCode) else {
                     os_log("POST Server error", type: .error)
-                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+                    semaphore.signal()
                     return
                 }
                 if let mimeType = response.mimeType,

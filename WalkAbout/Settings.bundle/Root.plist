@@ -16,11 +16,13 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Server domain</string>
+			<string>Server domain: </string>
 			<key>Key</key>
 			<string>serverDomainKey</string>
 			<key>DefaultValue</key>
-			<string>10.0.1.4:3000</string>
+			<string>http://10.0.1.4:3000</string>
+			<key>KeyboardType</key>
+			<string>URL</string>
 		</dict>
 	</array>
 </dict>

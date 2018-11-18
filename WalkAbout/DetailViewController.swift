@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os
 
 class DetailViewController: UIViewController {
     @IBOutlet weak var detailNameLabel: UILabel!
@@ -74,6 +75,7 @@ class DetailViewController: UIViewController {
         var startFrom = 0
         if let sessions = dataStore.readMetadataFor(sessionID: session.id), let lastSession = sessions.last {
             startFrom = lastSession.id + 1
+            os_log("Start from: %li", type: .info, startFrom)
         }
         accMeter.startFor(sessionID: session.id, from: startFrom) { [weak self](acc) in
             guard let self = self else {return}

@@ -135,6 +135,7 @@ final class DataStore {
     
     // Store Metadata in the database.
     func storeMetadata(data: Metadata) {
+        os_log("Store Metadata: %li", type: .error, data.id)
         do {
             let stmt = try dbConnection.prepare("INSERT INTO Metadata (ID, SessionID, At, AccX, AccY, AccZ) VALUES (?, ?, ?, ?, ?, ?)")
             try stmt.run(Int(data.id),
@@ -155,7 +156,7 @@ final class DataStore {
         do {
             var metadata: [Metadata] = []
             let stmts = try dbConnection.prepare("SELECT * FROM Metadata WHERE SessionID = ? LIMIT 2400", Int(sessionID))
-            os_log("Metadata read from database", type: .error)
+            os_log("Metadata read from database", type: .info)
             stmts.forEach { (row) in
                 let meta = Metadata(id: Int(row[0] as! Int64),
                                     sessionID: Int(row[1] as! Int64),
