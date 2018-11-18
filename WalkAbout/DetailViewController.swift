@@ -43,7 +43,10 @@ class DetailViewController: UIViewController {
             }
             if session.saved {
                 cloudButton.isEnabled = false
-                cloudButton.setTitle("Saved", for: .disabled)
+                cloudButton.setTitle("Saved", for: .normal)
+            } else {
+                cloudButton.isEnabled = true
+                cloudButton.setTitle("Save to Cloud", for: .normal)
             }
             // Disable stop button and start if not available
             stopButton.isEnabled = false
@@ -52,7 +55,6 @@ class DetailViewController: UIViewController {
                 startButton.isEnabled = true
             } else {
                 startButton.isEnabled = false
-                startButton.setTitle("Not Available", for: .disabled)
             }
         } else {
             // No session created then disable
@@ -72,7 +74,7 @@ class DetailViewController: UIViewController {
         stopButton.isEnabled = true
         startButton.isEnabled = false
         guard let session = session else {return}
-        var startFrom = 0
+        var startFrom = 4000000 * session.id
         if let sessions = dataStore.readMetadataFor(sessionID: session.id), let lastSession = sessions.last {
             startFrom = lastSession.id + 1
             os_log("Start from: %li", type: .info, startFrom)
