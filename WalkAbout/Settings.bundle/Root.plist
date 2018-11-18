@@ -14,7 +14,7 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
+			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
 			<string>Server domain</string>
 			<key>Key</key>

@@ -21,17 +21,18 @@ class DetailViewController: UIViewController {
     
     let dataStore = DataStore.shared
     let accMeter = AcceleroMeter.shared
-    var lastSessionID: Int32 = 0
+    var lastSessionID = 0
     
     var session: Session? {
         didSet {
-            // Update the view.
             configureView()
         }
     }
     
+    // Update the user interface for the session
     func configureView() {
-        // Update the user interface for the session
+        guard isViewLoaded else {return}
+    
         if let session = self.session {
             if let label = detailNameLabel {
                 label.text = session.name
@@ -43,31 +44,38 @@ class DetailViewController: UIViewController {
                 cloudButton.isEnabled = false
                 cloudButton.setTitle("Saved", for: .disabled)
             }
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureView()
-        // Disable stop button and start if not available
-        stopButton.isEnabled = false
-        cloudButton.isEnabled = false
-        if accMeter.isAvailable() {
-            startButton.isEnabled = true
+            // Disable stop button and start if not available
+            stopButton.isEnabled = false
+            cloudButton.isEnabled = false
+            if accMeter.isAvailable() {
+                startButton.isEnabled = true
+            } else {
+                startButton.isEnabled = false
+                startButton.setTitle("Not Available", for: .disabled)
+            }
         } else {
+            // No session created then disable
             startButton.isEnabled = false
-            startButton.setTitle("Not Available", for: .disabled)
         }
         xBar.progress = 0
         yBar.progress = 0
         zBar.progress = 0
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureView()
+    }
+    
     @IBAction func startRecordingData(_:Any) {
         stopButton.isEnabled = true
         startButton.isEnabled = false
         guard let session = session else {return}
-        accMeter.startFor(sessionID: session.id, from: 0) { [weak self](acc) in
+        var startFrom = 0
+        if let sessions = dataStore.readMetadataFor(sessionID: session.id), let lastSession = sessions.last {
+            startFrom = lastSession.id + 1
+        }
+        accMeter.startFor(sessionID: session.id, from: startFrom) { [weak self](acc) in
             guard let self = self else {return}
             let range = 1.0
             self.xBar.progress = Float(acc.x / range)
@@ -91,7 +99,6 @@ class DetailViewController: UIViewController {
             if success {
                 // Mark session saved
                 let newSession = Session(id: session.id, clientID: session.clientID, at: session.at, name: session.name, description: session.description, saved: true)
-                print("newSession: \(newSession)")
                 self.cloudButton.isEnabled = false
                 self.cloudButton.setTitle("Saved", for: .disabled)
                 self.session = newSession

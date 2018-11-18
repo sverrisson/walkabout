@@ -18,9 +18,17 @@ enum APIRequestError: Error {
 // NetworkClient singleton handles all network traffic in and out
 class NetworkClient {
     static var shared = NetworkClient()
+    private var serverDomain = "http://10.0.1.4:3000"
+    private let pathname = "/session"
     
-    var serverDomain = "localhost:3000"
-    let pathname = "/client/"
+    init() {
+        // Check if Server Domain is set in settings
+        let defaults = UserDefaults.standard
+        if let serverDomain = defaults.string(forKey: Constants.serverDomainKey) {
+            os_log("Server domain from settings: %@", type: .info, serverDomain)
+            self.serverDomain = serverDomain
+        }
+    }
     
     func fetchData(clientID: String, callback: @escaping (Client?, URLResponse?, Error?) -> Void) throws -> Void {
         let href: String = serverDomain + pathname + clientID
@@ -57,7 +65,7 @@ class NetworkClient {
                 }.resume()
         } else { throw APIRequestError.url(url: href) }
     }
-
+    
     // Send data and return the success
     func sendDataSynchronously(_ uploadData: Data) -> Bool {
         let href: String = serverDomain + pathname
@@ -74,12 +82,19 @@ class NetworkClient {
             let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
                 if let error = error {
                     os_log("POST error: %@", type: .error, error.localizedDescription)
+                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
                     return
                 }
-                guard let response = response as? HTTPURLResponse,
-                    (200...299).contains(response.statusCode) else {
-                        os_log("POST Server error", type: .error)
-                        return
+                guard let response = response as? HTTPURLResponse else {
+                    os_log("POST Server error", type: .error)
+                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+                    return
+                }
+                os_log("Server statusCode: %li", type: .debug, response.statusCode)
+                guard (200...299).contains(response.statusCode) else {
+                    os_log("POST Server error", type: .error)
+                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+                    return
                 }
                 if let mimeType = response.mimeType,
                     mimeType == "application/json",

@@ -19,7 +19,7 @@ class SessionsViewController: UITableViewController {
         formatter.timeZone = TimeZone.current
         return formatter
     }()
-    private var lastSessionID: Int32 = 0
+    private var lastSessionID = 0
     private var client: Client?
 
     override func viewDidLoad() {
@@ -32,6 +32,11 @@ class SessionsViewController: UITableViewController {
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+        }
+        
+        // Import all stored sessions
+        if let sessions = dataStore.readAllSessions() {
+            self.sessions = sessions
         }
     }
     
@@ -68,7 +73,6 @@ class SessionsViewController: UITableViewController {
             if let textFields = alert?.textFields {
                 textFields.forEach({ (textField) in
                     if let text = textField.text, text.count > 0 {
-                        print("Text field: \(text)")
                         if textField.tag == 1 {
                             name = text
                         } else {
@@ -80,20 +84,24 @@ class SessionsViewController: UITableViewController {
             // Create Session
             let defaults = UserDefaults.standard
             if defaults.integer(forKey: Constants.sessionIdKeys) > 0 {
-                self.lastSessionID = Int32(defaults.integer(forKey: Constants.sessionIdKeys))
+                self.lastSessionID = defaults.integer(forKey: Constants.sessionIdKeys)
+                // Update for next Session
+                defaults.set(self.lastSessionID + 1, forKey: Constants.sessionIdKeys)
             }
+            let sessionID = self.lastSessionID + 1
             if let client = self.client {
-                let session = Session(id: self.lastSessionID + 1, clientID: client.id, at: Date(), name: name, description: description, saved: false)
+                let session = Session(id: sessionID, clientID: client.id, at: Date(), name: name, description: description, saved: false)
                 self.insertNewSession(session: session)
                 self.dataStore.storeSession(session: session)
             } else {
                 if let client = self.dataStore.readClient() {
                     self.client = client
-                    let session = Session(id: self.lastSessionID + 1, clientID: client.id, at: Date(), name: name, description: description, saved: false)
+                    let session = Session(id: sessionID, clientID: client.id, at: Date(), name: name, description: description, saved: false)
                     self.insertNewSession(session: session)
                     self.dataStore.storeSession(session: session)
                 }
             }
+            self.lastSessionID += 1
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -106,7 +114,6 @@ class SessionsViewController: UITableViewController {
     
     func replaceSession(session: Session) {
         if let selected = tableView.indexPathForSelectedRow {
-            print(session.description)
             sessions[selected.item] = session
             tableView.reloadRows(at: [selected], with: .automatic)
         } else {

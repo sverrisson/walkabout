@@ -19,11 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        // Check if Server Domain is set in settings
-        let defaults = UserDefaults.standard
-        if let serverDomain = defaults.string(forKey: Constants.serverDomainKey) {
-            networkClient.serverDomain = serverDomain
-        }
         // Prepare the database
         dataStore.storeClient()
         
