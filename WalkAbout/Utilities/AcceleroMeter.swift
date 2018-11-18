@@ -1,5 +1,5 @@
 //
-//  acceleroMeter.swift
+//  AcceleroMeter.swift
 //  WalkAbout
 //
 //  Created by Hannes Sverrisson on 15/11/2018.
@@ -12,29 +12,38 @@ import os
 
 final class AcceleroMeter {
     static let shared = AcceleroMeter()
-    var motionManager = CMMotionManager()
+    private var motionManager = CMMotionManager()
+    private var accelerometerData: [Metadata] = []
+    private var dataStore = DataStore.shared
+    private var available = false
     let measurementBuffer = 100
-    var accelerometerData: [Metadata] = []
-    var sessionID: Int32!
-    var id: Int32 = 0
-    var dataStore = DataStore.shared
+    var sessionID: Int!
+    var id: Int = 0
     
     init() {
         os_log("AccelerometerData Init", type: .info)
         accelerometerData.reserveCapacity(measurementBuffer + 1)
         motionManager.accelerometerUpdateInterval = Constants.accInterval
-        if !(motionManager.isAccelerometerAvailable) {
+    }
+    
+    func isAvailable() -> Bool {
+        available = motionManager.isAccelerometerAvailable
+        if !available {
             os_log("AccelerometerData Not Available", type: .error)
         }
+        return available
     }
     
     // Data is stored as milli-g
-    fileprivate func toMillig(_ value: Double) -> Int32 {
-        return Int32(value * 1000)
+    fileprivate func toMillig(_ value: Double) -> Int {
+        // Clamp the value to Int32 size
+        let value = Int32(value * 1000)
+        return Int(value)
     }
     
     // Start a measurement for given sessionID and Metadata id (if not zero), return acceleration in a callback for ui updates
-    func startFor(sessionID: Int32, from id: Int32, callback: ((CMAcceleration) -> ())? = nil) {
+    func startFor(sessionID: Int, from id: Int, callback: ((CMAcceleration) -> ())? = nil) {
+        guard self.available == true else {return}
         accelerometerData.removeAll()
         self.sessionID = sessionID
         self.id = id
