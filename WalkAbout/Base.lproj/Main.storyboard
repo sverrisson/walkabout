@@ -88,9 +88,13 @@
                                     </progressView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="jez-iL-zvG">
+                                <rect key="frame" x="197" y="569" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="d8O-hr-tvJ" firstAttribute="top" secondItem="jez-iL-zvG" secondAttribute="baseline" constant="8" symbolType="layoutAnchor" id="0I0-wi-4P2"/>
                             <constraint firstItem="VUw-jc-0yf" firstAttribute="trailing" secondItem="1fK-yo-DPT" secondAttribute="trailing" constant="20" id="3jE-UX-h2I"/>
                             <constraint firstItem="d8O-hr-tvJ" firstAttribute="top" secondItem="XPp-P8-RMt" secondAttribute="bottom" constant="48" id="4aP-6o-DEx"/>
                             <constraint firstItem="XPp-P8-RMt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0XM-y9-sOw" secondAttribute="bottom" constant="48" id="77f-WD-Z9j"/>
@@ -98,6 +102,7 @@
                             <constraint firstItem="VUw-jc-0yf" firstAttribute="trailing" secondItem="XPp-P8-RMt" secondAttribute="trailing" constant="20" id="Hcy-D8-phT"/>
                             <constraint firstItem="d8O-hr-tvJ" firstAttribute="centerX" secondItem="0XM-y9-sOw" secondAttribute="centerX" id="NLe-f0-CX9"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" constant="20" symbolic="YES" id="Tsc-yG-G1q"/>
+                            <constraint firstItem="jez-iL-zvG" firstAttribute="centerX" secondItem="d8O-hr-tvJ" secondAttribute="centerX" id="UuZ-cc-6j6"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="top" secondItem="OLp-0H-ubC" secondAttribute="bottom" constant="16" id="Y5I-mg-A0i"/>
                             <constraint firstItem="VUw-jc-0yf" firstAttribute="bottom" secondItem="1fK-yo-DPT" secondAttribute="bottom" constant="48" id="afm-4g-RfS"/>
                             <constraint firstItem="VUw-jc-0yf" firstAttribute="trailing" secondItem="OLp-0H-ubC" secondAttribute="trailing" constant="20" id="c0b-wH-9ZM"/>
@@ -114,6 +119,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Session Data" id="mOI-FS-AaM"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="jez-iL-zvG" id="697-RG-FPV"/>
                         <outlet property="cloudButton" destination="d8O-hr-tvJ" id="Uqr-de-118"/>
                         <outlet property="detailDescriptionLabel" destination="0XM-y9-sOw" id="deQ-Na-JPF"/>
                         <outlet property="detailNameLabel" destination="OLp-0H-ubC" id="JKR-In-dwe"/>

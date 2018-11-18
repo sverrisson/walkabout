@@ -21,7 +21,7 @@
 		D120D89021A0633400F477A5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D120D88921A0633400F477A5 /* Settings.bundle */; };
 		D120D89221A0666400F477A5 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120D89121A0666400F477A5 /* NetworkClient.swift */; };
 		D120D89421A06E1100F477A5 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120D89321A06E1100F477A5 /* DeviceInfo.swift */; };
-		D18DBA5E219FA04800416522 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; };
+		D120D89521A0DAC700F477A5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D102ED72219CD753000D2E55 /* libsqlite3.tbd */; };
 		D18DBA5F219FA04800416522 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D18DBA50219F9FF800416522 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -133,7 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D18DBA5E219FA04800416522 /* SQLite.framework in Frameworks */,
+				D120D89521A0DAC700F477A5 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

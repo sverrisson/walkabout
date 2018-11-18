@@ -17,6 +17,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var xBar: UIProgressView!
     @IBOutlet weak var yBar: UIProgressView!
     @IBOutlet weak var zBar: UIProgressView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let dataStore = DataStore.shared
     let accMeter = AcceleroMeter.shared
@@ -31,7 +32,7 @@ class DetailViewController: UIViewController {
     
     func configureView() {
         // Update the user interface for the session
-        if let session = session {
+        if let session = self.session {
             if let label = detailNameLabel {
                 label.text = session.name
             }
@@ -39,8 +40,8 @@ class DetailViewController: UIViewController {
                 label.text = session.description
             }
             if session.saved {
-                cloudButton.setTitle("Saved", for: .disabled)
                 cloudButton.isEnabled = false
+                cloudButton.setTitle("Saved", for: .disabled)
             }
         }
     }
@@ -62,20 +63,6 @@ class DetailViewController: UIViewController {
         zBar.progress = 0
     }
     
-    // MARK: - Segues
-    
-    // Return the session if it has been saved
-    override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
-        guard let session = self.session else {return}
-        if session.saved {
-            if let nav = subsequentVC as? UINavigationController {
-                if let master = nav.topViewController as? SessionsViewController {
-                    master.replaceSession(session: session)
-                }
-            }
-        }
-    }
-    
     @IBAction func startRecordingData(_:Any) {
         stopButton.isEnabled = true
         startButton.isEnabled = false
@@ -91,26 +78,39 @@ class DetailViewController: UIViewController {
     
     @IBAction func stopRecording(_:Any) {
         stopButton.isEnabled = false
-        accMeter.stopAndSaveData()
         cloudButton.isEnabled = true
+        accMeter.stopAndSaveData()
     }
     
     @IBAction func saveToCloud(_:Any) {
         guard let session = self.session else {return}
         stopRecording(true)
-        dataStore.sendToCloud(session: session) { (success) in
+        self.activityIndicator.startAnimating()
+        dataStore.sendToCloud(session: session) { [weak self](success) in
+            guard let self = self else {return}
             if success {
                 // Mark session saved
                 let newSession = Session(id: session.id, clientID: session.clientID, at: session.at, name: session.name, description: session.description, saved: true)
+                print("newSession: \(newSession)")
+                self.cloudButton.isEnabled = false
+                self.cloudButton.setTitle("Saved", for: .disabled)
+                self.session = newSession
+            }
+            self.activityIndicator.stopAnimating()
+        }
+    }
+    
+    // MARK: - Segues
+    
+    // Return the session if it has been saved
+    override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
+        guard let session = self.session else {return}
+        if session.saved {
+            if let nav = subsequentVC as? UINavigationController {
+                if let master = nav.topViewController as? SessionsViewController {
+                    master.replaceSession(session: session)
+                }
             }
         }
     }
 }
-
-
-//let id: Int32
-//let clientID: String
-//let at: Date
-//let name: String
-//let description: String?
-//let saved: Bool = false

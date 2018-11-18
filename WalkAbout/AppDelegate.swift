@@ -42,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Continue running in background
-        
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

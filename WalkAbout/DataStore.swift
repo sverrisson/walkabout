@@ -16,6 +16,7 @@ import UIKit
 final class DataStore {
     static let shared = DataStore()
     private var dbConnection: Connection!
+    private var backgroundTaskID: UIBackgroundTaskIdentifier?
     private var dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = .withInternetDateTime
@@ -94,11 +95,11 @@ final class DataStore {
         do {
             let stmt = try dbConnection.prepare("INSERT INTO MSession (ID, ClientID, At, Name, Description, Saved) VALUES (?, ?, ?, ?, ?, ?)")
             try stmt.run(Int(session.id),
-                         Int(session.clientID),
+                         session.clientID,
                          toISODate(date: session.at),
                          session.name,
                          session.description,
-                         session.saved ? 1 :0)
+                         session.saved ? 1 : 0)
             os_log("Session created in database", type: .error)
         } catch {
             os_log("Couldn't create Session in database", type: .error)
@@ -163,9 +164,34 @@ final class DataStore {
     }
     
     // Sends data to the cloud for the given session and deletes the data if successful
-    func sendToCloud(session: Session, callback: (Bool) -> ()) {
-        //FIXME: Send to cloud
-        callback(true)
+    func sendToCloud(session: Session, callback: @escaping (Bool) -> ()) {
+        os_log("Send data to API server in background if needed", type: .info)
+        DispatchQueue.global().async {
+            let networkClient = NetworkClient.shared
+            self.backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "Finish Network Upload") {
+                // End the task if time expires.
+                DispatchQueue.main.async {
+                    callback(false)
+                }
+                UIApplication.shared.endBackgroundTask(self.backgroundTaskID!)
+                self.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            }
+            if let client = self.readClient(), let meta = self.readMetadataFor(sessionID: session.id) {
+                let payload = Payload(client: client, session: session, data: meta)
+                let encoder = JSONEncoder()
+                if let data = try? encoder.encode(payload) {
+                    // Send the data synchronously.
+                    let result = networkClient.sendDataSynchronously(data)
+                    DispatchQueue.main.async {
+                        callback(result)
+                    }
+                }
+            }
+            
+            // End the task assertion.
+            UIApplication.shared.endBackgroundTask(self.backgroundTaskID!)
+            self.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
+        }
     }
     
 }

@@ -9,7 +9,7 @@
 import Foundation
 import SQLite
 
-// Client geymir upplýsingar um símann eða ipadinn.  Nauðsynlegt að ID sé GUID eða sambærilegt sem er bundið við þetta tæki.  Viljum ekki lenda í vandræðum ef 2 clienter fá sama ID þegar við byrjum replication.  Sama á við um önnur ID.  Viljum líka vita hvað tækið heitir („Síminn hans Stjána“) og tegund („Iphone 6s“)
+// Client stored iPhone info.  The ID is GUID.
 struct Client: Codable, CustomStringConvertible {
     let id: String
     let at: Date
@@ -22,17 +22,21 @@ struct Client: Codable, CustomStringConvertible {
     }
 }
 
-// Session er geymir nafn („Labbaði í mat“) og lysingu („Labbaði löngu leiðina, krækti fyrir kelduna“)
-struct Session: Codable {
+// Session stores name („Labbaði í mat“) and description („Labbaði löngu leiðina, krækti fyrir kelduna“)
+struct Session: Codable, CustomDebugStringConvertible {
     let id: Int32
     let clientID: String
     let at: Date
     let name: String
     let description: String?
     let saved: Bool
+    
+    var debugDescription: String {
+        return "(id: \(id), clientID: \(clientID), at: \(at.description), name: \(name), description: \(String(describing: description)), saved: \(saved)"
+    }
 }
 
-// Metadata geymir x,y,z accelerometer gögnin sem er safnað.
+// Metadata stores x,y,z accelerometer data collected.
 struct Metadata: Codable {
     let id: Int32
     let sessionID: Int32
@@ -40,4 +44,11 @@ struct Metadata: Codable {
     let accX: Int32
     let accY: Int32
     let accZ: Int32
+}
+
+// Payload is used to transfer data to server
+struct Payload: Codable {
+    let client: Client
+    let session: Session
+    let data: [Metadata]
 }

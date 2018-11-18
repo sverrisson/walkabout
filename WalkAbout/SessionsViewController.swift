@@ -106,6 +106,7 @@ class SessionsViewController: UITableViewController {
     
     func replaceSession(session: Session) {
         if let selected = tableView.indexPathForSelectedRow {
+            print(session.description)
             sessions[selected.item] = session
             tableView.reloadRows(at: [selected], with: .automatic)
         } else {

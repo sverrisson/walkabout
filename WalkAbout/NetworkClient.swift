@@ -58,4 +58,41 @@ class NetworkClient {
         } else { throw APIRequestError.url(url: href) }
     }
 
+    // Send data and return the success
+    func sendDataSynchronously(_ uploadData: Data) -> Bool {
+        let href: String = serverDomain + pathname
+        let semaphore = DispatchSemaphore(value: 0)
+        var success = false
+        
+        if let url = URL(string: href) {
+            os_log("POST href: %@", type: .debug, url.absoluteString)
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            // Upload data
+            let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
+                if let error = error {
+                    os_log("POST error: %@", type: .error, error.localizedDescription)
+                    return
+                }
+                guard let response = response as? HTTPURLResponse,
+                    (200...299).contains(response.statusCode) else {
+                        os_log("POST Server error", type: .error)
+                        return
+                }
+                if let mimeType = response.mimeType,
+                    mimeType == "application/json",
+                    let data = data,
+                    let dataString = String(data: data, encoding: .utf8) {
+                    os_log("Server response: %@", type: .error, dataString)
+                    success = true
+                    semaphore.signal()
+                }
+            }
+            task.resume()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        return success
+    }
 }
