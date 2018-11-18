@@ -24,9 +24,14 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon76" translatesAutoresizingMaskIntoConstraints="NO" id="nKp-fu-Eka">
+                                <rect key="frame" x="149.5" y="218" width="76" height="76"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.13398224472999576" green="0.13214263785995353" blue="0.1335223430124852" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="nKp-fu-Eka" firstAttribute="centerX" secondItem="ufz-i4-FMX" secondAttribute="centerX" id="CvU-iH-5Nz"/>
+                            <constraint firstItem="ufz-i4-FMX" firstAttribute="top" secondItem="nKp-fu-Eka" secondAttribute="bottom" constant="16" id="fLx-Ls-1a2"/>
                             <constraint firstItem="ufz-i4-FMX" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fdM-xW-uT1"/>
                             <constraint firstItem="ufz-i4-FMX" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="p2e-yL-72u"/>
                         </constraints>
@@ -35,7 +40,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Icon76" width="76" height="76"/>
+    </resources>
 </document>
