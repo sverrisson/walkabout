@@ -20,7 +20,7 @@
 			<key>Key</key>
 			<string>serverDomainKey</string>
 			<key>DefaultValue</key>
-			<string>localhost:3000</string>
+			<string>10.0.1.4:3000</string>
 		</dict>
 	</array>
 </dict>

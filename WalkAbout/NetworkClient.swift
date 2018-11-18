@@ -20,7 +20,7 @@ class NetworkClient {
     static var shared = NetworkClient()
     
     var serverDomain = "localhost:3000"
-    let pathname = "/Client/"
+    let pathname = "/client/"
     
     func fetchData(clientID: String, callback: @escaping (Client?, URLResponse?, Error?) -> Void) throws -> Void {
         let href: String = serverDomain + pathname + clientID
