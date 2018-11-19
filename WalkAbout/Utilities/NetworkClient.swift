@@ -34,7 +34,7 @@ class NetworkClient {
         let href: String = serverDomain + pathname + clientID
         
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 15
+        config.timeoutIntervalForRequest = 8
         let session = URLSession(configuration: config)
         
         if let url = URL(string: href) {
@@ -79,6 +79,10 @@ class NetworkClient {
         let semaphore = DispatchSemaphore(value: 0)
         var success = false
         
+        let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = 8
+        let session = URLSession(configuration: config)
+        
         if let url = URL(string: href) {
             os_log("POST href: %@", type: .debug, url.absoluteString)
             var request = URLRequest(url: url)
@@ -86,11 +90,10 @@ class NetworkClient {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
             // Upload data
-            let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
+            let task = session.uploadTask(with: request, from: uploadData) { data, response, error in
                 if let error = error {
                     os_log("POST error: %@", type: .error, error.localizedDescription)
                     semaphore.signal()
-                    return
                 }
                 guard let response = response as? HTTPURLResponse else {
                     os_log("POST Server error", type: .error)

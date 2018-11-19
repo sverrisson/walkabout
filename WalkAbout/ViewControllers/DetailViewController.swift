@@ -123,7 +123,7 @@ class DetailViewController: UIViewController {
                 self.returnSession()
             } else {
                 // Alert the user of the failure
-                let alert = UIAlertController(title: "Not Saved!", message: "Failed in sending the Session data to the server.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Not Saved!", message: "Failed sending the Session data to the server.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Make successful", style: .destructive, handler: { [weak self] (_) in
                     guard let self = self else {return}
                     // Mark session saved
