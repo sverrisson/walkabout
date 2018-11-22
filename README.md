@@ -1,11 +1,5 @@
 # walkabout
-walkabout test app for some users
+Walkabout test app.
 
 ## Development
-Descripe setup of development setup 
-
-## Deployment
-Descripe deployment process
-
-## Info
-Contact: hannessv@gmail.com
+[Readme](https://github.com/sverrisson/walkaboutserver)
